@@ -1,0 +1,9 @@
+/* Special Switching of values */
+
+:root {
+    --banner-image: url("../sprites/TitleBanner_Hughes.png");
+    --show-on-hughes: block !important;
+    --hide-on-hughes: none !important;
+
+    --profile-margin: -5px;
+}

@@ -1,0 +1,90 @@
+/* First Article */
+
+:root {
+    --profile-margin: -35px;
+}
+
+
+#profilePhoto {
+    height: 300px;
+    max-height: 40vw;
+    margin-bottom: var(--profile-margin);
+    border-radius: 10px;
+}
+
+#nametag {
+    position: relative;
+    display: var(--hide-on-hughes);
+    top: -15px;
+    left: 110px;
+    rotate: -2.5deg;
+    width: fit-content;
+    padding: 2px 7px;
+
+    background-color: rgb(255, 191, 255);
+    color: black;
+    font-weight: bold;
+    border: outset orange;
+    border-radius: 7px;
+    box-shadow: 4px 4px 2px rgba(0, 0, 0, .5);
+}
+
+.sectionTitle2 {
+    display: none;
+}
+
+.buttonPanel {
+    display: flex;
+    flex-direction: column;
+    min-width: 125px;
+    height: 90%;
+    min-height: 200px;
+    max-height: 275px;
+    justify-content: space-around;
+}
+
+.sectionImg2 {
+    display: none;
+}
+
+.sidePhoto {
+    height: 180px;
+    border-radius: 10px;
+    margin-bottom: -5px;
+}
+
+@media screen and (max-width: 750px) {
+    #profilePhoto {
+        margin-bottom: -5px;
+    }
+    #nametag {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 725px) {
+    .sectionTitle1 {
+        display: none;
+    }
+    .sectionTitle2 {
+        display: block;
+    }
+    .buttonPanel {
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .sectionImg1 {
+        display: none;
+    }
+    .sectionImg2 {
+        display: block;
+        margin: 15px;
+        float: inherit;
+    }
+    .sectionImg2 > img {
+        height: auto;
+        width: 100%;
+    }
+}
