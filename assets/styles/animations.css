@@ -113,15 +113,3 @@
         right: 0px;
     }
 }
-
-/* Articles Slide-In */
-@keyframes newArticle {
-    0% {
-        opacity: 0;
-        top: 50px;
-    }
-    100% {
-        opacity: 1;
-        top: 0px;
-    }
-}
