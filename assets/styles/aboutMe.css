@@ -23,7 +23,6 @@
 
 #mobilePhotoSubsection {
     display: none;
-    padding-bottom: 30px;
 }
 
 #nametag {
@@ -70,6 +69,31 @@
     height: 180px;
     border-radius: 10px;
     margin-bottom: -5px;
+}
+
+#mySpecialInterests {
+
+}
+
+.galleryLinks {
+    display: flex;
+    flex-direction: column;
+    float: right;
+}
+
+.galleryLinks > .subsection {
+    width: 200px;
+}
+
+.galleryLinks > .subsection > a {
+    padding-bottom: 2px;
+}
+
+.galleryLinks > .subsection > .sidePhoto {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 120px;
 }
 
 @media screen and (max-width: 1050px) {

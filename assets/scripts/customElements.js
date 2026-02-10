@@ -5,14 +5,14 @@
 function loadAboutMe()
 {
     //Load Table if not init
-    if (interestTable == null) {
+    if (interestTable[0] == null) {
         const xhr = new XMLHttpRequest();
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var response = xhr.responseText;
-                interestTable = response.split("\r\n");
-                if (interestTable.length < 2)
-                    interestTable = response.split("\n");
+                interestTable[0] = response.split("\r\n");
+                if (interestTable[0].length < 2)
+                    interestTable[0] = response.split("\n");
                 loadInterest("My Friends");
             } else {
                 console.error("Request failed. Status:", xhr.status);
@@ -26,16 +26,38 @@ function loadAboutMe()
         //Load
         xhr.open("GET", "./assets/details/AboutMe-Hobbies.csv", true);
         xhr.send();
+
+        //Load second table
+        /*const xhr2 = new XMLHttpRequest();
+        xhr2.onload = function() {
+            if (xhr2.status === 200) {
+                var response = xhr2.responseText;
+                interestTable[1] = response.split("\r\n");
+                if (interestTable[1].length < 2)
+                    interestTable[1] = response.split("\n");
+                loadSpecialInterestTeaser("Ecosystems");
+            } else {
+                console.error("Request failed. Status:", xhr.status);
+            }
+        };
+
+        xhr2.onerror = function() {
+            console.error("Network Error");
+        };
+
+        //Load
+        xhr2.open("GET", "./assets/details/AboutMe-Interests.csv", true);
+        xhr2.send();*/
     }
 }
 
-var interestTable = null;
+var interestTable = [];
 
 function loadInterest(interestIndex) {
     //Puts response based on table
     var inCorrectSection = false;
     var sectionString = "";
-    interestTable.forEach((element) => {
+    interestTable[0].forEach((element) => {
         var keyItem = element.split(",");
         if (inCorrectSection && keyItem[0] != "")
             inCorrectSection = false;
@@ -52,11 +74,32 @@ function loadInterest(interestIndex) {
     document.getElementById("myInterests").children[1].innerHTML = sectionString;
 
     //Images
-    document.getElementById("myInterests").children[0].children[0].src = "./assets/sprites/aboutMe/" + interestIndex + ".webp"
-    document.getElementById("myInterests").children[2].children[0].src = "./assets/sprites/aboutMe/" + interestIndex + ".webp"
+    document.getElementById("myInterests").children[0].children[0].src = "./assets/sprites/aboutMe/" + interestIndex + ".webp";
+    document.getElementById("myInterests").children[2].children[0].src = "./assets/sprites/aboutMe/" + interestIndex + ".webp";
 }
 
-function selectNewInterest(self) {
+/*function loadSpecialInterestTeaser(interestIndex) {
+    //Puts response based on table
+    var sectionString = "";
+    interestTable[1].forEach((element) => {
+        var keyItem = element.split(",");
+        if (keyItem[0] == interestIndex) {
+            inCorrectSection = true;
+            sectionString += "&nbsp;&nbsp;&nbsp;&nbsp;";
+            for (var i = 6; i < keyItem.length; i++)
+                sectionString += keyItem[i].replaceAll("\"", "") + ",";
+            sectionString = sectionString.slice(0, -1);
+            sectionString += " ... <br>";
+
+            //Image
+            document.getElementById("mySpecialInterests").children[0].children[0].src =
+                "./assets/sprites/aboutMe/specialInterests/" + interestIndex + "_" + (parseInt(keyItem[1]) + 1) + ".webp";
+        }
+    });
+    document.getElementById("mySpecialInterests").children[1].children[0].innerHTML = sectionString;
+}*/
+
+function selectNewInterest(self, isHobby) {
     var parent = self.parentElement.parentElement;
     // Buttons
     for (var i = 0; i < parent.children.length; i++) {
@@ -66,7 +109,10 @@ function selectNewInterest(self) {
     }
     self.parentElement.classList.add("selected");
 
-    loadInterest(interestIndex);
+    if (isHobby)
+        loadInterest(interestIndex);
+    else
+        loadSpecialInterestTeaser(interestIndex);
 }
 
 
@@ -84,6 +130,11 @@ function loadProjectsTable(index, filter) {
                 projectsTable[index] = response.split("\r\n");
                 if (projectsTable[index].length < 2)
                     projectsTable[index] = response.split("\n");
+
+                //Load FullReleases if hash is set
+                if (!filter && index == 0)
+                    filter = "Full Releases";
+
                 loadProjects(index, filter);
             } else {
                 console.error("Request failed. Status:", xhr.status);
@@ -134,7 +185,7 @@ function loadProjects(index, filter) {
             }
 
             //Is not in Filter
-            if (filter && filter != "" && !row[2].includes(filter)) {
+            if (filter && filter != "" && filter != "All" && !row[2].includes(filter)) {
                 currNode = null;
             }
             //Is in Filter
@@ -167,8 +218,10 @@ function loadProjects(index, filter) {
                     currNode.children[1].children[i].style.backgroundImage = "url('./assets/sprites/" + id.toLowerCase() + "/" + shortName + "_" + (i + 1) + ".webp')"
 
                 //Has Video
-                if (row[4] != "")
+                if (row[4] != "") {
                     currNode.children[1].children[2].setAttribute("youtube", row[4]);
+                    currNode.children[1].children[2].style.borderColor = "white";
+                }
                 //Remove play button
                 else {
                     currNode.children[1].children[2].children[0].remove();
@@ -215,9 +268,6 @@ function projectFilter(self) {
     self.parentElement.classList.add("selected");
 
     filter = filter.replaceAll(" / ", "");
-
-    if (filter == "All")
-        filter = "";
 
     loadProjects(0, filter);
 }
